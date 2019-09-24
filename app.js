@@ -19,23 +19,23 @@ app.get('/cloud-firestore-export', async (req, res) => {
         Authorization: 'Bearer ' + accessToken
     };
 
-    const outputUriPrefix = req.param('outputUriPrefix');
-    if (!(outputUriPrefix && outputUriPrefix.indexOf('gs://') == 0)) {
-        res.status(500).send(`Malformed outputUriPrefix: ${outputUriPrefix}`);
-    }
+    // const outputUriPrefix = req.param('outputUriPrefix');
+    // if (!(outputUriPrefix && outputUriPrefix.indexOf('gs://') == 0)) {
+    //     res.status(500).send(`Malformed outputUriPrefix: ${outputUriPrefix}`);
+    // }
 
     // Construct a backup path folder based on the timestamp
     const timestamp = dateformat(Date.now(), 'yyyy-mm-dd-HH-MM-ss');
-    let path = outputUriPrefix;
-    path =+ path.endsWith('/') ? timestamp : '/' + timestamp;
-
+    // let path = outputUriPrefix;
+    // path =+ path.endsWith('/') ? timestamp : '/' + timestamp;
+    const path = `gs://projeto-compras-bd4f9.appspot.com/automatic-firestore-backup/${timestamp}`
     const body = { outputUriPrefix: path };
 
     // If specified, mark specific collections for backup
-    const collectionParam = req.param('collections');
-    if (collectionParam) {
-        body.collectionIds = collectionParam.split(',');
-    }
+    // const collectionParam = req.param('collections');
+    // if (collectionParam) {
+    //     body.collectionIds = collectionParam.split(',');
+    // }
 
     const projectId = process.env.GOOGLE_CLOUD_PROJECT;
     const url = `https://firestore.googleapis.com/v1beta1/projects/${projectId}/databases/(default):exportDocuments`;
