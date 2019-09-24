@@ -1,1 +1,7 @@
-runtime: nodejs8
+service: automatic-firebase-backup
+runtime: nodejs10
+env: standard
+
+basic_scaling:
+  max_instances: 1
+  idle_timeout: 0.5m
