@@ -1,5 +1,5 @@
 {
-  "name": "solution-scheduled-backups",
+  "name": "automatic-firebase-backup",
   "version": "1.0.0",
   "description": "Scheduled Cloud Firestore backups via AppEngine cron",
   "main": "app.js",
