@@ -1,4 +1,3 @@
-service: automatic-firebase-backup
 runtime: nodejs10
 env: standard
 
