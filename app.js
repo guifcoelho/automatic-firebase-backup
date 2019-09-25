@@ -25,26 +25,30 @@ app.get('/cloud-firestore-export', async (req, res) => {
     // }
 
     // Construct a backup path folder based on the timestamp
-    const timestamp = dateformat(Date.now(), 'yyyy-mm-dd-HH-MM-ss');
-    let subfolder = req.param('subfolder');
-    if(subfolder) subfolder = 'per_collection';
-
-    const path = `gs://projeto-compras-bd4f9.appspot.com/automatic-firestore-backup/${timestamp}/${subfolder}`;
-    
-    const body = { outputUriPrefix: path };
-
-    // If specified, mark specific collections for backup
-    const collectionParam = req.param('collections');
-    if (collectionParam) {
-        body.collectionIds = collectionParam.split(',');
-    }
 
     const projectId = process.env.GOOGLE_CLOUD_PROJECT;
     const url = `https://firestore.googleapis.com/v1beta1/projects/${projectId}/databases/(default):exportDocuments`;
 
+    const timestamp = dateformat(Date.now(), 'yyyy-mm-dd-HH-MM-ss');
+    const path = [
+        `gs://projeto-compras-bd4f9.appspot.com/automatic-firestore-backup/${timestamp}/all`,
+        `gs://projeto-compras-bd4f9.appspot.com/automatic-firestore-backup/${timestamp}/per_collection`
+    ];
+    const body = path.map(el => { return {outputUriPrefix: el} });
+
+    // If specified, mark specific collections for backup
+    const collectionParam = req.param('collections');
+    const collectionIds = collectionParam ? collectionParam.split(',') : null;
+
     try {
-        const response = await axios.post(url, body, { headers: headers });
-        res.status(200).send(response.data).end();
+        const [respAll, respPerColl] = await Promise.all([
+            axios.post(url, body[0], { headers: headers }),
+            axios.post(url, {...body[1], collectionIds}, { headers: headers })
+        ]);
+
+        const responseBody = JSON.stringify([respAll.data, respPerColl.data]);
+        res.status(200).send(responseBody).end();
+        
     } catch (e) {
         if (e.response) {
             console.warn(e.response.data);
