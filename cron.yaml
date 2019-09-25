@@ -1,4 +1,8 @@
 cron:
-- description: "Daily Cloud Firestore Export"
-  url: /cloud-firestore-export?collections=compras,cotacoes,notas_fiscais,parcelas_pagamento,pedidos_compra,fornecedores,projetos
+- description: "Exportação diária do Firestore - Por collection"
+  url: /cloud-firestore-export?subfolder=per_collection&collections=compras,cotacoes,notas_fiscais,parcelas_pagamento,pedidos_compra,fornecedores,projetos
+  schedule: every 24 hours
+
+- description: "Exportação diária do Firestore - Todas"
+  url: /cloud-firestore-export?subfolder=all
   schedule: every 24 hours
