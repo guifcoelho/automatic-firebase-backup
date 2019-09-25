@@ -1,5 +1,4 @@
 cron:
 - description: "Daily Cloud Firestore Export"
-  url: /cloud-firestore-export
-  target: automatic-firebase-backup
+  url: /cloud-firestore-export?collections=compras,fornecedores,projetos
   schedule: every 24 hours

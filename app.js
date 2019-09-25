@@ -32,10 +32,10 @@ app.get('/cloud-firestore-export', async (req, res) => {
     const body = { outputUriPrefix: path };
 
     // If specified, mark specific collections for backup
-    // const collectionParam = req.param('collections');
-    // if (collectionParam) {
-    //     body.collectionIds = collectionParam.split(',');
-    // }
+    const collectionParam = req.param('collections');
+    if (collectionParam) {
+        body.collectionIds = collectionParam.split(',');
+    }
 
     const projectId = process.env.GOOGLE_CLOUD_PROJECT;
     const url = `https://firestore.googleapis.com/v1beta1/projects/${projectId}/databases/(default):exportDocuments`;
