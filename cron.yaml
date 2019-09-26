@@ -1,4 +1,8 @@
 cron:
-- description: "Exportação diária do Firestore"
-  url: /cloud-firestore-export?collections=compras,cotacoes,notas_fiscais,parcelas_pagamento,pedidos_compra,fornecedores,projetos
-  schedule: every 24 hours
+- description: "Daily Firebase backup"
+  url: /cloud-firestore-export?collections=
+  schedule: every 24 hours 22:00
+  timezone: America/Sao_Paulo
+  retry_parameters:
+    min_backoff_seconds: 5
+    job_retry_limit: 1
