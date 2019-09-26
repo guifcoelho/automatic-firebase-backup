@@ -8,8 +8,10 @@ const app = express();
 // Trigger a backup
 app.get('/cloud-firestore-export', async (req, res) => {
 
-    const AppEngineHeader = req.get('X-Appengine-Cron');
-    if(AppEngineHeader) return res.status(403).send('Cron called outside App Engine').end();
+    if(req.get('X-Appengine-Cron') !== 'true') {
+        console.warn('Cron called outside of App Engine');
+        return res.status(403).send('Cron called outside of App Engine').end()
+    };
 
     const auth = await google.auth.getClient({
         scopes: ['https://www.googleapis.com/auth/datastore']
