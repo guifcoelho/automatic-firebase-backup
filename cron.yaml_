@@ -1,7 +1,7 @@
 cron:
 - description: "Daily Firebase backup"
   url: /cloud-firestore-export?collections=
-  schedule: every 24 hours 22:00
+  schedule: every 24 hours from 22:00 to 23:59
   timezone: America/Sao_Paulo
   retry_parameters:
     min_backoff_seconds: 5
